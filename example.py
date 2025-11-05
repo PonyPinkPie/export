@@ -5,9 +5,8 @@ from tqdm import tqdm
 import shutil
 
 
-onnx_path = '/home/wuxiaobin/mycode/tmp/export/ckpt/resnet18.onnx'
+onnx_path = 'ckpt/resnet18.onnx'
 engine_path = onnx_path.replace('.onnx', '.engine')
-# onnx_path = '/home/wuxiaobin/mycode/tmp/export/ckpt/moganet_seg_h416_w384_c3.onnx'
 
 trt_cfg = dict(
     max_batch_size=1,
@@ -28,5 +27,5 @@ _ = model(dummy_input)
 
 
 
-# for _ in tqdm(range(10000)):
-#     _ = model(dummy_input)
+for _ in tqdm(range(10000)):
+    _ = model(dummy_input)

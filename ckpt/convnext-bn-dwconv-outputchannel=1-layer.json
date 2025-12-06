@@ -1,0 +1,2734 @@
+{"Layers": [{
+  "Name": "__mye3518_0_myl0_0",
+  "LayerType": "shape_call",
+  "Inputs": [],
+  "Outputs": [],
+  "TacticName": "",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "__myl_CastReplConc_myl0_1",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "input.0",
+    "Dimensions": [-1,3,512,512],
+    "Format/Datatype": "Float"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/downsample_layers_0/downsample_layers_0_0/Conv_output_0.1_4_myl0",
+    "Dimensions": [-1,4,512,512],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_CastReplConc_0xc1132a73fd247fc5464402e5487f16e6",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: input.0_cast_to_fp16]\u001f[ONNX Layer: /backbone/downsample_layers.0/downsample_layers.0.0/Conv]"
+},{
+  "Name": "/backbone/downsample_layers_0/downsample_layers_0_0/Conv_myl0_2",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/downsample_layers_0/downsample_layers_0_0/Conv_output_0.1_4_myl0",
+    "Dimensions": [-1,4,512,512],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_5_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_indexed_wo_smem_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize128x32x64_stage1_warpsize4x1x1_g1_tensor16x8x16_aligna8_alignc8",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/downsample_layers.0/downsample_layers.0.0/Conv]"
+},{
+  "Name": "__myl_Tran_myl0_3",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_5_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_0/dwconv/Conv_output_0.1_6_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Tran_0x74b5e81c88df852b4d56af50d2c56556",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.0/stages.0.0/dwconv/Conv]"
+},{
+  "Name": "/backbone/stages_0/stages_0_0/dwconv/Conv_myl0_4",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_0/dwconv/Conv_output_0.1_6_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_7_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm50_xmma_fprop_conv2d_c1_k1_f16f16_f16_f16_nchwkcrs_nchw_tilesize10x40x8_threadsize4x4_r7s7_u1v1_xcorr_zerobeta",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.0/stages.0.0/dwconv/Conv]"
+},{
+  "Name": "__myl_MulCast_myl0_5",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_7_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_0/act/Relu_output_0_QuantizeLinear_Output.1_8_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0xe107d2f629748b583103350f64770cf2",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.0/stages.0.0/dwconv/Conv_output_0_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_0/stages_0_0/pwconv1/Conv_myl0_6",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_0/act/Relu_output_0_QuantizeLinear_Output.1_8_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_0/pwconv2/Conv_output_0.1_9_myl0",
+    "Dimensions": [-1,384,128,128],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3e4m3_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x128x64_stage3_warpsize2x2x1_g1_tensor16x8x32_bias_f32_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.0/stages.0.0/pwconv1/Conv]\u001f[ONNX Layer: /backbone/stages.0/stages.0.0/dwconv/Conv_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.0.0.pwconv1.weight_DequantizeLinear]\u001f[ONNX Layer: /backbone/stages.0/stages.0.0/act/Relu_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.0/stages.0.0/act/Relu]\u001f[ONNX Layer: backbone.stages.0.0.pwconv1.weight_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_0/stages_0_0/pwconv2/Conv_myl0_7",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_0/pwconv2/Conv_output_0.1_9_myl0",
+    "Dimensions": [-1,384,128,128],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_10_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize64x128x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.0/stages.0.0/pwconv2/Conv]\u001f[ONNX Layer: /backbone/stages.0/stages.0.0/act/Relu_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.0.0.pwconv2.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.0.0.pwconv2.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_Add_myl0_8",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_5_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_10_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_1/dwconv/Conv_output_0.1_11_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Add_0x38565dd7eadc325b15e09ca08cfd745d",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.0/stages.0.0/Add]"
+},{
+  "Name": "/backbone/stages_0/stages_0_1/dwconv/Conv_myl0_9",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_1/dwconv/Conv_output_0.1_11_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_12_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm50_xmma_fprop_conv2d_c1_k1_f16f16_f16_f16_nchwkcrs_nchw_tilesize10x40x8_threadsize4x4_r7s7_u1v1_xcorr_zerobeta",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.0/stages.0.1/dwconv/Conv]"
+},{
+  "Name": "__myl_MulCast_myl0_10",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_12_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_1/act/Relu_output_0_QuantizeLinear_Output.1_13_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0xe107d2f629748b583103350f64770cf2",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.0/stages.0.1/dwconv/Conv_output_0_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_0/stages_0_1/pwconv1/Conv_myl0_11",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_1/act/Relu_output_0_QuantizeLinear_Output.1_13_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_1/pwconv2/Conv_output_0.1_14_myl0",
+    "Dimensions": [-1,384,128,128],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3e4m3_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x128x64_stage3_warpsize2x2x1_g1_tensor16x8x32_bias_f32_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.0/stages.0.1/pwconv1/Conv]\u001f[ONNX Layer: /backbone/stages.0/stages.0.1/dwconv/Conv_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.0.1.pwconv1.weight_DequantizeLinear]\u001f[ONNX Layer: /backbone/stages.0/stages.0.1/act/Relu_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.0/stages.0.1/act/Relu]\u001f[ONNX Layer: backbone.stages.0.1.pwconv1.weight_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_0/stages_0_1/pwconv2/Conv_myl0_12",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_1/pwconv2/Conv_output_0.1_14_myl0",
+    "Dimensions": [-1,384,128,128],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_15_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize64x128x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.0/stages.0.1/pwconv2/Conv]\u001f[ONNX Layer: /backbone/stages.0/stages.0.1/act/Relu_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.0.1.pwconv2.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.0.1.pwconv2.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_Add_myl0_13",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_1/dwconv/Conv_output_0.1_11_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_15_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_2/dwconv/Conv_output_0.1_16_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Add_0x1d082155a085e55d29a4a97fda6daa6f",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.0/stages.0.1/Add]"
+},{
+  "Name": "/backbone/stages_0/stages_0_2/dwconv/Conv_myl0_14",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_2/dwconv/Conv_output_0.1_16_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_17_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm50_xmma_fprop_conv2d_c1_k1_f16f16_f16_f16_nchwkcrs_nchw_tilesize10x40x8_threadsize4x4_r7s7_u1v1_xcorr_zerobeta",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.0/stages.0.2/dwconv/Conv]"
+},{
+  "Name": "__myl_MulCast_myl0_15",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_17_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_2/act/Relu_output_0_QuantizeLinear_Output.1_18_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0xe107d2f629748b583103350f64770cf2",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.0/stages.0.2/dwconv/Conv_output_0_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_0/stages_0_2/pwconv1/Conv_myl0_16",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_2/act/Relu_output_0_QuantizeLinear_Output.1_18_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_2/pwconv2/Conv_output_0.1_19_myl0",
+    "Dimensions": [-1,384,128,128],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3e4m3_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x128x64_stage3_warpsize2x2x1_g1_tensor16x8x32_bias_f32_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.0/stages.0.2/pwconv1/Conv]\u001f[ONNX Layer: /backbone/stages.0/stages.0.2/dwconv/Conv_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.0.2.pwconv1.weight_DequantizeLinear]\u001f[ONNX Layer: /backbone/stages.0/stages.0.2/act/Relu_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.0/stages.0.2/act/Relu]\u001f[ONNX Layer: backbone.stages.0.2.pwconv1.weight_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_0/stages_0_2/pwconv2/Conv_myl0_17",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_2/pwconv2/Conv_output_0.1_19_myl0",
+    "Dimensions": [-1,384,128,128],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_20_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize64x128x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.0/stages.0.2/pwconv2/Conv]\u001f[ONNX Layer: /backbone/stages.0/stages.0.2/act/Relu_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.0.2.pwconv2.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.0.2.pwconv2.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_AddMulCastCastMulMulAddMulCast_myl0_18",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_0/stages_0_2/dwconv/Conv_output_0.1_16_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_20_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/downsample_layers_1/downsample_layers_1_1/Conv_output_0.1_22_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "FP8"
+  },
+  {
+    "Name": "/backbone/stages.0/stages.0.2/Add_output_0_DequantizeLinear_Output",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_AddMulCastCastMulMulAddMulCast_0xcf5c8807a523f4bd5a8ceb829c307bf2",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.0/stages.0.2/Add]\u001f[ONNX Layer: /backbone/stages.0/stages.0.2/Add_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.0/stages.0.2/Add_output_0_DequantizeLinear]\u001f[ONNX Layer: /backbone/downsample_layers.1/downsample_layers.1.0/BatchNormalization_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/downsample_layers.1/downsample_layers.1.0/BatchNormalization]"
+},{
+  "Name": "/backbone/downsample_layers_1/downsample_layers_1_1/Conv_myl0_19",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/downsample_layers_1/downsample_layers_1_1/Conv_output_0.1_22_myl0",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_23_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/downsample_layers.1/downsample_layers.1.1/Conv]\u001f[ONNX Layer: /backbone/downsample_layers.1/downsample_layers.1.0/BatchNormalization_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.downsample_layers.1.1.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.downsample_layers.1.1.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_Tran_myl0_20",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_23_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_0/dwconv/Conv_output_0.1_24_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Tran_0x2ada1e70bb16edacef9c1ff1e0974899",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.1/stages.1.0/dwconv/Conv]"
+},{
+  "Name": "/backbone/stages_1/stages_1_0/dwconv/Conv_myl0_21",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_0/dwconv/Conv_output_0.1_24_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_25_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm50_xmma_fprop_conv2d_c1_k1_f16f16_f16_f16_nchwkcrs_nchw_tilesize10x40x8_threadsize4x4_r7s7_u1v1_xcorr_zerobeta",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.1/stages.1.0/dwconv/Conv]"
+},{
+  "Name": "__myl_MulCast_myl0_22",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_25_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_0/act/Relu_output_0_QuantizeLinear_Output.1_26_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0x0ddbebb47cdc4f908bb3955fbcc2e2d9",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.1/stages.1.0/dwconv/Conv_output_0_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_1/stages_1_0/pwconv1/Conv_myl0_23",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_0/act/Relu_output_0_QuantizeLinear_Output.1_26_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_0/pwconv2/Conv_output_0.1_27_myl0",
+    "Dimensions": [-1,768,64,64],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3e4m3_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x128x64_stage3_warpsize2x2x1_g1_tensor16x8x32_bias_f32_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.1/stages.1.0/pwconv1/Conv]\u001f[ONNX Layer: /backbone/stages.1/stages.1.0/dwconv/Conv_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.1.0.pwconv1.weight_DequantizeLinear]\u001f[ONNX Layer: /backbone/stages.1/stages.1.0/act/Relu_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.1/stages.1.0/act/Relu]\u001f[ONNX Layer: backbone.stages.1.0.pwconv1.weight_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_1/stages_1_0/pwconv2/Conv_myl0_24",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_0/pwconv2/Conv_output_0.1_27_myl0",
+    "Dimensions": [-1,768,64,64],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_28_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.1/stages.1.0/pwconv2/Conv]\u001f[ONNX Layer: /backbone/stages.1/stages.1.0/act/Relu_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.1.0.pwconv2.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.1.0.pwconv2.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_Add_myl0_25",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_23_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_28_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_1/dwconv/Conv_output_0.1_29_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Add_0x52a2010cfb376c4c79c85f04e763e46f",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.1/stages.1.0/Add]"
+},{
+  "Name": "/backbone/stages_1/stages_1_1/dwconv/Conv_myl0_26",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_1/dwconv/Conv_output_0.1_29_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_30_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm50_xmma_fprop_conv2d_c1_k1_f16f16_f16_f16_nchwkcrs_nchw_tilesize10x40x8_threadsize4x4_r7s7_u1v1_xcorr_zerobeta",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.1/stages.1.1/dwconv/Conv]"
+},{
+  "Name": "__myl_MulCast_myl0_27",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_30_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_1/act/Relu_output_0_QuantizeLinear_Output.1_31_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0x0ddbebb47cdc4f908bb3955fbcc2e2d9",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.1/stages.1.1/dwconv/Conv_output_0_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_1/stages_1_1/pwconv1/Conv_myl0_28",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_1/act/Relu_output_0_QuantizeLinear_Output.1_31_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_1/pwconv2/Conv_output_0.1_32_myl0",
+    "Dimensions": [-1,768,64,64],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3e4m3_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x128x64_stage3_warpsize2x2x1_g1_tensor16x8x32_bias_f32_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.1/stages.1.1/pwconv1/Conv]\u001f[ONNX Layer: /backbone/stages.1/stages.1.1/dwconv/Conv_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.1.1.pwconv1.weight_DequantizeLinear]\u001f[ONNX Layer: /backbone/stages.1/stages.1.1/act/Relu_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.1/stages.1.1/act/Relu]\u001f[ONNX Layer: backbone.stages.1.1.pwconv1.weight_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_1/stages_1_1/pwconv2/Conv_myl0_29",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_1/pwconv2/Conv_output_0.1_32_myl0",
+    "Dimensions": [-1,768,64,64],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_33_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.1/stages.1.1/pwconv2/Conv]\u001f[ONNX Layer: /backbone/stages.1/stages.1.1/act/Relu_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.1.1.pwconv2.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.1.1.pwconv2.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_Add_myl0_30",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_1/dwconv/Conv_output_0.1_29_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_33_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_2/dwconv/Conv_output_0.1_34_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Add_0x16f226e75109b41d2bad217af6ab5b6e",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.1/stages.1.1/Add]"
+},{
+  "Name": "/backbone/stages_1/stages_1_2/dwconv/Conv_myl0_31",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_2/dwconv/Conv_output_0.1_34_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_35_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm50_xmma_fprop_conv2d_c1_k1_f16f16_f16_f16_nchwkcrs_nchw_tilesize10x40x8_threadsize4x4_r7s7_u1v1_xcorr_zerobeta",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.1/stages.1.2/dwconv/Conv]"
+},{
+  "Name": "__myl_MulCast_myl0_32",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_35_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_2/act/Relu_output_0_QuantizeLinear_Output.1_36_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0x0ddbebb47cdc4f908bb3955fbcc2e2d9",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.1/stages.1.2/dwconv/Conv_output_0_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_1/stages_1_2/pwconv1/Conv_myl0_33",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_2/act/Relu_output_0_QuantizeLinear_Output.1_36_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_2/pwconv2/Conv_output_0.1_37_myl0",
+    "Dimensions": [-1,768,64,64],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3e4m3_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x128x64_stage3_warpsize2x2x1_g1_tensor16x8x32_bias_f32_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.1/stages.1.2/pwconv1/Conv]\u001f[ONNX Layer: /backbone/stages.1/stages.1.2/dwconv/Conv_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.1.2.pwconv1.weight_DequantizeLinear]\u001f[ONNX Layer: /backbone/stages.1/stages.1.2/act/Relu_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.1/stages.1.2/act/Relu]\u001f[ONNX Layer: backbone.stages.1.2.pwconv1.weight_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_1/stages_1_2/pwconv2/Conv_myl0_34",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_2/pwconv2/Conv_output_0.1_37_myl0",
+    "Dimensions": [-1,768,64,64],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_38_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.1/stages.1.2/pwconv2/Conv]\u001f[ONNX Layer: /backbone/stages.1/stages.1.2/act/Relu_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.1.2.pwconv2.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.1.2.pwconv2.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_AddMulCastCastMulMulAddMulCast_myl0_35",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_1/stages_1_2/dwconv/Conv_output_0.1_34_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_38_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/downsample_layers_2/downsample_layers_2_1/Conv_output_0.1_40_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "FP8"
+  },
+  {
+    "Name": "/backbone/stages.1/stages.1.2/Add_output_0_DequantizeLinear_Output",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_AddMulCastCastMulMulAddMulCast_0xa3aa54f73333951c4bf3d1e298bb32f7",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.1/stages.1.2/Add]\u001f[ONNX Layer: /backbone/stages.1/stages.1.2/Add_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.1/stages.1.2/Add_output_0_DequantizeLinear]\u001f[ONNX Layer: /backbone/downsample_layers.2/downsample_layers.2.0/BatchNormalization_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/downsample_layers.2/downsample_layers.2.0/BatchNormalization]"
+},{
+  "Name": "/backbone/downsample_layers_2/downsample_layers_2_1/Conv_myl0_36",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/downsample_layers_2/downsample_layers_2_1/Conv_output_0.1_40_myl0",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_41_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/downsample_layers.2/downsample_layers.2.1/Conv]\u001f[ONNX Layer: /backbone/downsample_layers.2/downsample_layers.2.0/BatchNormalization_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.downsample_layers.2.1.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.downsample_layers.2.1.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_Tran_myl0_37",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_41_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_0/dwconv/Conv_output_0.1_42_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Tran_0xd5f6c36e035fbc5283fc8da1dfa8b079",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.0/dwconv/Conv]"
+},{
+  "Name": "/backbone/stages_2/stages_2_0/dwconv/Conv_myl0_38",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_0/dwconv/Conv_output_0.1_42_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_43_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm50_xmma_fprop_conv2d_c1_k1_f16f16_f16_f16_nchwkcrs_nchw_tilesize10x40x8_threadsize4x4_r7s7_u1v1_xcorr_zerobeta",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.0/dwconv/Conv]"
+},{
+  "Name": "__myl_MulCast_myl0_39",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_43_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_0/act/Relu_output_0_QuantizeLinear_Output.1_44_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0x658a2638477172f6f737ec221d8378fa",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.0/dwconv/Conv_output_0_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_2/stages_2_0/pwconv1/Conv_myl0_40",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_0/act/Relu_output_0_QuantizeLinear_Output.1_44_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_0/pwconv2/Conv_output_0.1_45_myl0",
+    "Dimensions": [-1,1536,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3e4m3_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f32_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.0/pwconv1/Conv]\u001f[ONNX Layer: /backbone/stages.2/stages.2.0/dwconv/Conv_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.0.pwconv1.weight_DequantizeLinear]\u001f[ONNX Layer: /backbone/stages.2/stages.2.0/act/Relu_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.2/stages.2.0/act/Relu]\u001f[ONNX Layer: backbone.stages.2.0.pwconv1.weight_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_2/stages_2_0/pwconv2/Conv_myl0_41",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_0/pwconv2/Conv_output_0.1_45_myl0",
+    "Dimensions": [-1,1536,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_46_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.0/pwconv2/Conv]\u001f[ONNX Layer: /backbone/stages.2/stages.2.0/act/Relu_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.0.pwconv2.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.0.pwconv2.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_Add_myl0_42",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_41_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_46_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_1/dwconv/Conv_output_0.1_47_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Add_0x9f9e5fe040b08fa6aa66301127789bbc",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.0/Add]"
+},{
+  "Name": "/backbone/stages_2/stages_2_1/dwconv/Conv_myl0_43",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_1/dwconv/Conv_output_0.1_47_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_48_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm50_xmma_fprop_conv2d_c1_k1_f16f16_f16_f16_nchwkcrs_nchw_tilesize10x40x8_threadsize4x4_r7s7_u1v1_xcorr_zerobeta",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.1/dwconv/Conv]"
+},{
+  "Name": "__myl_MulCast_myl0_44",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_48_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_1/act/Relu_output_0_QuantizeLinear_Output.1_49_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0x658a2638477172f6f737ec221d8378fa",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.1/dwconv/Conv_output_0_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_2/stages_2_1/pwconv1/Conv_myl0_45",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_1/act/Relu_output_0_QuantizeLinear_Output.1_49_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_1/pwconv2/Conv_output_0.1_50_myl0",
+    "Dimensions": [-1,1536,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3e4m3_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f32_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.1/pwconv1/Conv]\u001f[ONNX Layer: /backbone/stages.2/stages.2.1/dwconv/Conv_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.1.pwconv1.weight_DequantizeLinear]\u001f[ONNX Layer: /backbone/stages.2/stages.2.1/act/Relu_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.2/stages.2.1/act/Relu]\u001f[ONNX Layer: backbone.stages.2.1.pwconv1.weight_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_2/stages_2_1/pwconv2/Conv_myl0_46",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_1/pwconv2/Conv_output_0.1_50_myl0",
+    "Dimensions": [-1,1536,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_51_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.1/pwconv2/Conv]\u001f[ONNX Layer: /backbone/stages.2/stages.2.1/act/Relu_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.1.pwconv2.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.1.pwconv2.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_Add_myl0_47",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_1/dwconv/Conv_output_0.1_47_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_51_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_2/dwconv/Conv_output_0.1_52_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Add_0xe40cb411b39658e236afe6b4a1041fc4",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.1/Add]"
+},{
+  "Name": "/backbone/stages_2/stages_2_2/dwconv/Conv_myl0_48",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_2/dwconv/Conv_output_0.1_52_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_53_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm50_xmma_fprop_conv2d_c1_k1_f16f16_f16_f16_nchwkcrs_nchw_tilesize10x40x8_threadsize4x4_r7s7_u1v1_xcorr_zerobeta",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.2/dwconv/Conv]"
+},{
+  "Name": "__myl_MulCast_myl0_49",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_53_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_2/act/Relu_output_0_QuantizeLinear_Output.1_54_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0x658a2638477172f6f737ec221d8378fa",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.2/dwconv/Conv_output_0_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_2/stages_2_2/pwconv1/Conv_myl0_50",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_2/act/Relu_output_0_QuantizeLinear_Output.1_54_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_2/pwconv2/Conv_output_0.1_55_myl0",
+    "Dimensions": [-1,1536,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3e4m3_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f32_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.2/pwconv1/Conv]\u001f[ONNX Layer: /backbone/stages.2/stages.2.2/dwconv/Conv_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.2.pwconv1.weight_DequantizeLinear]\u001f[ONNX Layer: /backbone/stages.2/stages.2.2/act/Relu_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.2/stages.2.2/act/Relu]\u001f[ONNX Layer: backbone.stages.2.2.pwconv1.weight_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_2/stages_2_2/pwconv2/Conv_myl0_51",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_2/pwconv2/Conv_output_0.1_55_myl0",
+    "Dimensions": [-1,1536,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_56_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.2/pwconv2/Conv]\u001f[ONNX Layer: /backbone/stages.2/stages.2.2/act/Relu_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.2.pwconv2.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.2.pwconv2.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_Add_myl0_52",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_2/dwconv/Conv_output_0.1_52_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_56_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_3/dwconv/Conv_output_0.1_57_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Add_0xe40cb411b39658e236afe6b4a1041fc4",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.2/Add]"
+},{
+  "Name": "/backbone/stages_2/stages_2_3/dwconv/Conv_myl0_53",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_3/dwconv/Conv_output_0.1_57_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_58_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm50_xmma_fprop_conv2d_c1_k1_f16f16_f16_f16_nchwkcrs_nchw_tilesize10x40x8_threadsize4x4_r7s7_u1v1_xcorr_zerobeta",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.3/dwconv/Conv]"
+},{
+  "Name": "__myl_MulCast_myl0_54",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_58_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_3/act/Relu_output_0_QuantizeLinear_Output.1_59_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0x658a2638477172f6f737ec221d8378fa",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.3/dwconv/Conv_output_0_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_2/stages_2_3/pwconv1/Conv_myl0_55",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_3/act/Relu_output_0_QuantizeLinear_Output.1_59_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_3/pwconv2/Conv_output_0.1_60_myl0",
+    "Dimensions": [-1,1536,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3e4m3_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f32_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.3/pwconv1/Conv]\u001f[ONNX Layer: /backbone/stages.2/stages.2.3/dwconv/Conv_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.3.pwconv1.weight_DequantizeLinear]\u001f[ONNX Layer: /backbone/stages.2/stages.2.3/act/Relu_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.2/stages.2.3/act/Relu]\u001f[ONNX Layer: backbone.stages.2.3.pwconv1.weight_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_2/stages_2_3/pwconv2/Conv_myl0_56",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_3/pwconv2/Conv_output_0.1_60_myl0",
+    "Dimensions": [-1,1536,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_61_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.3/pwconv2/Conv]\u001f[ONNX Layer: /backbone/stages.2/stages.2.3/act/Relu_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.3.pwconv2.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.3.pwconv2.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_Add_myl0_57",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_3/dwconv/Conv_output_0.1_57_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_61_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_4/dwconv/Conv_output_0.1_62_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Add_0xe40cb411b39658e236afe6b4a1041fc4",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.3/Add]"
+},{
+  "Name": "/backbone/stages_2/stages_2_4/dwconv/Conv_myl0_58",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_4/dwconv/Conv_output_0.1_62_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_63_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm50_xmma_fprop_conv2d_c1_k1_f16f16_f16_f16_nchwkcrs_nchw_tilesize10x40x8_threadsize4x4_r7s7_u1v1_xcorr_zerobeta",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.4/dwconv/Conv]"
+},{
+  "Name": "__myl_MulCast_myl0_59",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_63_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_4/act/Relu_output_0_QuantizeLinear_Output.1_64_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0x658a2638477172f6f737ec221d8378fa",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.4/dwconv/Conv_output_0_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_2/stages_2_4/pwconv1/Conv_myl0_60",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_4/act/Relu_output_0_QuantizeLinear_Output.1_64_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_4/pwconv2/Conv_output_0.1_65_myl0",
+    "Dimensions": [-1,1536,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3e4m3_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f32_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.4/pwconv1/Conv]\u001f[ONNX Layer: /backbone/stages.2/stages.2.4/dwconv/Conv_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.4.pwconv1.weight_DequantizeLinear]\u001f[ONNX Layer: /backbone/stages.2/stages.2.4/act/Relu_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.2/stages.2.4/act/Relu]\u001f[ONNX Layer: backbone.stages.2.4.pwconv1.weight_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_2/stages_2_4/pwconv2/Conv_myl0_61",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_4/pwconv2/Conv_output_0.1_65_myl0",
+    "Dimensions": [-1,1536,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_66_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.4/pwconv2/Conv]\u001f[ONNX Layer: /backbone/stages.2/stages.2.4/act/Relu_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.4.pwconv2.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.4.pwconv2.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_Add_myl0_62",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_4/dwconv/Conv_output_0.1_62_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_66_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_5/dwconv/Conv_output_0.1_67_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Add_0xe40cb411b39658e236afe6b4a1041fc4",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.4/Add]"
+},{
+  "Name": "/backbone/stages_2/stages_2_5/dwconv/Conv_myl0_63",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_5/dwconv/Conv_output_0.1_67_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_68_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm50_xmma_fprop_conv2d_c1_k1_f16f16_f16_f16_nchwkcrs_nchw_tilesize10x40x8_threadsize4x4_r7s7_u1v1_xcorr_zerobeta",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.5/dwconv/Conv]"
+},{
+  "Name": "__myl_MulCast_myl0_64",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_68_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_5/act/Relu_output_0_QuantizeLinear_Output.1_69_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0x658a2638477172f6f737ec221d8378fa",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.5/dwconv/Conv_output_0_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_2/stages_2_5/pwconv1/Conv_myl0_65",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_5/act/Relu_output_0_QuantizeLinear_Output.1_69_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_5/pwconv2/Conv_output_0.1_70_myl0",
+    "Dimensions": [-1,1536,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3e4m3_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f32_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.5/pwconv1/Conv]\u001f[ONNX Layer: /backbone/stages.2/stages.2.5/dwconv/Conv_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.5.pwconv1.weight_DequantizeLinear]\u001f[ONNX Layer: /backbone/stages.2/stages.2.5/act/Relu_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.2/stages.2.5/act/Relu]\u001f[ONNX Layer: backbone.stages.2.5.pwconv1.weight_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_2/stages_2_5/pwconv2/Conv_myl0_66",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_5/pwconv2/Conv_output_0.1_70_myl0",
+    "Dimensions": [-1,1536,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_71_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.5/pwconv2/Conv]\u001f[ONNX Layer: /backbone/stages.2/stages.2.5/act/Relu_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.5.pwconv2.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.5.pwconv2.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_Add_myl0_67",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_5/dwconv/Conv_output_0.1_67_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_71_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_6/dwconv/Conv_output_0.1_72_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Add_0xe40cb411b39658e236afe6b4a1041fc4",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.5/Add]"
+},{
+  "Name": "/backbone/stages_2/stages_2_6/dwconv/Conv_myl0_68",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_6/dwconv/Conv_output_0.1_72_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_73_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm50_xmma_fprop_conv2d_c1_k1_f16f16_f16_f16_nchwkcrs_nchw_tilesize10x40x8_threadsize4x4_r7s7_u1v1_xcorr_zerobeta",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.6/dwconv/Conv]"
+},{
+  "Name": "__myl_MulCast_myl0_69",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_73_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_6/act/Relu_output_0_QuantizeLinear_Output.1_74_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0x658a2638477172f6f737ec221d8378fa",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.6/dwconv/Conv_output_0_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_2/stages_2_6/pwconv1/Conv_myl0_70",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_6/act/Relu_output_0_QuantizeLinear_Output.1_74_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_6/pwconv2/Conv_output_0.1_75_myl0",
+    "Dimensions": [-1,1536,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3e4m3_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f32_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.6/pwconv1/Conv]\u001f[ONNX Layer: /backbone/stages.2/stages.2.6/dwconv/Conv_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.6.pwconv1.weight_DequantizeLinear]\u001f[ONNX Layer: /backbone/stages.2/stages.2.6/act/Relu_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.2/stages.2.6/act/Relu]\u001f[ONNX Layer: backbone.stages.2.6.pwconv1.weight_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_2/stages_2_6/pwconv2/Conv_myl0_71",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_6/pwconv2/Conv_output_0.1_75_myl0",
+    "Dimensions": [-1,1536,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_76_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.6/pwconv2/Conv]\u001f[ONNX Layer: /backbone/stages.2/stages.2.6/act/Relu_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.6.pwconv2.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.6.pwconv2.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_Add_myl0_72",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_6/dwconv/Conv_output_0.1_72_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_76_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_7/dwconv/Conv_output_0.1_77_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Add_0xe40cb411b39658e236afe6b4a1041fc4",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.6/Add]"
+},{
+  "Name": "/backbone/stages_2/stages_2_7/dwconv/Conv_myl0_73",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_7/dwconv/Conv_output_0.1_77_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_78_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm50_xmma_fprop_conv2d_c1_k1_f16f16_f16_f16_nchwkcrs_nchw_tilesize10x40x8_threadsize4x4_r7s7_u1v1_xcorr_zerobeta",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.7/dwconv/Conv]"
+},{
+  "Name": "__myl_MulCast_myl0_74",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_78_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_7/act/Relu_output_0_QuantizeLinear_Output.1_79_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0x658a2638477172f6f737ec221d8378fa",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.7/dwconv/Conv_output_0_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_2/stages_2_7/pwconv1/Conv_myl0_75",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_7/act/Relu_output_0_QuantizeLinear_Output.1_79_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_7/pwconv2/Conv_output_0.1_80_myl0",
+    "Dimensions": [-1,1536,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3e4m3_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f32_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.7/pwconv1/Conv]\u001f[ONNX Layer: /backbone/stages.2/stages.2.7/dwconv/Conv_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.7.pwconv1.weight_DequantizeLinear]\u001f[ONNX Layer: /backbone/stages.2/stages.2.7/act/Relu_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.2/stages.2.7/act/Relu]\u001f[ONNX Layer: backbone.stages.2.7.pwconv1.weight_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_2/stages_2_7/pwconv2/Conv_myl0_76",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_7/pwconv2/Conv_output_0.1_80_myl0",
+    "Dimensions": [-1,1536,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_81_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.7/pwconv2/Conv]\u001f[ONNX Layer: /backbone/stages.2/stages.2.7/act/Relu_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.7.pwconv2.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.7.pwconv2.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_Add_myl0_77",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_7/dwconv/Conv_output_0.1_77_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_81_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_8/dwconv/Conv_output_0.1_82_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Add_0xe40cb411b39658e236afe6b4a1041fc4",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.7/Add]"
+},{
+  "Name": "/backbone/stages_2/stages_2_8/dwconv/Conv_myl0_78",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_8/dwconv/Conv_output_0.1_82_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_83_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm50_xmma_fprop_conv2d_c1_k1_f16f16_f16_f16_nchwkcrs_nchw_tilesize10x40x8_threadsize4x4_r7s7_u1v1_xcorr_zerobeta",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.8/dwconv/Conv]"
+},{
+  "Name": "__myl_MulCast_myl0_79",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_83_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_8/act/Relu_output_0_QuantizeLinear_Output.1_84_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0x658a2638477172f6f737ec221d8378fa",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.8/dwconv/Conv_output_0_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_2/stages_2_8/pwconv1/Conv_myl0_80",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_8/act/Relu_output_0_QuantizeLinear_Output.1_84_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_8/pwconv2/Conv_output_0.1_85_myl0",
+    "Dimensions": [-1,1536,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3e4m3_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f32_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.8/pwconv1/Conv]\u001f[ONNX Layer: /backbone/stages.2/stages.2.8/dwconv/Conv_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.8.pwconv1.weight_DequantizeLinear]\u001f[ONNX Layer: /backbone/stages.2/stages.2.8/act/Relu_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.2/stages.2.8/act/Relu]\u001f[ONNX Layer: backbone.stages.2.8.pwconv1.weight_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_2/stages_2_8/pwconv2/Conv_myl0_81",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_8/pwconv2/Conv_output_0.1_85_myl0",
+    "Dimensions": [-1,1536,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_86_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.8/pwconv2/Conv]\u001f[ONNX Layer: /backbone/stages.2/stages.2.8/act/Relu_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.8.pwconv2.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.2.8.pwconv2.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_AddMulCastCastMulMulAddMulCast_myl0_82",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_2/stages_2_8/dwconv/Conv_output_0.1_82_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_86_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/downsample_layers_3/downsample_layers_3_1/Conv_output_0.1_88_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  },
+  {
+    "Name": "/backbone/stages.2/stages.2.8/Add_output_0_DequantizeLinear_Output",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_AddMulCastCastMulMulAddMulCast_0xbf027a2e9082415439c4e1f77de25754",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.2/stages.2.8/Add]\u001f[ONNX Layer: /backbone/stages.2/stages.2.8/Add_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.2/stages.2.8/Add_output_0_DequantizeLinear]\u001f[ONNX Layer: /backbone/downsample_layers.3/downsample_layers.3.0/BatchNormalization_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/downsample_layers.3/downsample_layers.3.0/BatchNormalization]"
+},{
+  "Name": "/backbone/downsample_layers_3/downsample_layers_3_1/Conv_myl0_83",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/downsample_layers_3/downsample_layers_3_1/Conv_output_0.1_88_myl0",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_89_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/downsample_layers.3/downsample_layers.3.1/Conv]\u001f[ONNX Layer: /backbone/downsample_layers.3/downsample_layers.3.0/BatchNormalization_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.downsample_layers.3.1.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.downsample_layers.3.1.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_Tran_myl0_84",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_89_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_0/dwconv/Conv_output_0.1_90_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Tran_0xa2cdf55e026447c648bd88b928ecc922",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.3/stages.3.0/dwconv/Conv]"
+},{
+  "Name": "/backbone/stages_3/stages_3_0/dwconv/Conv_myl0_85",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_0/dwconv/Conv_output_0.1_90_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_91_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm50_xmma_fprop_conv2d_c1_k1_f16f16_f16_f16_nchwkcrs_nchw_tilesize10x40x8_threadsize4x4_r7s7_u1v1_xcorr_zerobeta",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.3/stages.3.0/dwconv/Conv]"
+},{
+  "Name": "__myl_MulCast_myl0_86",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_91_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_0/act/Relu_output_0_QuantizeLinear_Output.1_92_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0x1e64ed60a8240e1675942692bd91d53e",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.3/stages.3.0/dwconv/Conv_output_0_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_3/stages_3_0/pwconv1/Conv_myl0_87",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_0/act/Relu_output_0_QuantizeLinear_Output.1_92_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_0/pwconv2/Conv_output_0.1_93_myl0",
+    "Dimensions": [-1,3072,16,16],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3e4m3_e4m3f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f32_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.3/stages.3.0/pwconv1/Conv]\u001f[ONNX Layer: /backbone/stages.3/stages.3.0/dwconv/Conv_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.3.0.pwconv1.weight_DequantizeLinear]\u001f[ONNX Layer: /backbone/stages.3/stages.3.0/act/Relu_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.3/stages.3.0/act/Relu]\u001f[ONNX Layer: backbone.stages.3.0.pwconv1.weight_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_3/stages_3_0/pwconv2/Conv_myl0_88",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_0/pwconv2/Conv_output_0.1_93_myl0",
+    "Dimensions": [-1,3072,16,16],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_94_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.3/stages.3.0/pwconv2/Conv]\u001f[ONNX Layer: /backbone/stages.3/stages.3.0/act/Relu_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.3.0.pwconv2.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.3.0.pwconv2.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_Add_myl0_89",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_89_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_94_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_1/dwconv/Conv_output_0.1_95_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Add_0xf45b28aa79189bed05c168560a3210ab",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.3/stages.3.0/Add]"
+},{
+  "Name": "/backbone/stages_3/stages_3_1/dwconv/Conv_myl0_90",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_1/dwconv/Conv_output_0.1_95_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_96_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm50_xmma_fprop_conv2d_c1_k1_f16f16_f16_f16_nchwkcrs_nchw_tilesize10x40x8_threadsize4x4_r7s7_u1v1_xcorr_zerobeta",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.3/stages.3.1/dwconv/Conv]"
+},{
+  "Name": "__myl_MulCast_myl0_91",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_96_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_1/act/Relu_output_0_QuantizeLinear_Output.1_97_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0x1e64ed60a8240e1675942692bd91d53e",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.3/stages.3.1/dwconv/Conv_output_0_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_3/stages_3_1/pwconv1/Conv_myl0_92",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_1/act/Relu_output_0_QuantizeLinear_Output.1_97_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_1/pwconv2/Conv_output_0.1_98_myl0",
+    "Dimensions": [-1,3072,16,16],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3e4m3_e4m3f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f32_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.3/stages.3.1/pwconv1/Conv]\u001f[ONNX Layer: /backbone/stages.3/stages.3.1/dwconv/Conv_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.3.1.pwconv1.weight_DequantizeLinear]\u001f[ONNX Layer: /backbone/stages.3/stages.3.1/act/Relu_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.3/stages.3.1/act/Relu]\u001f[ONNX Layer: backbone.stages.3.1.pwconv1.weight_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_3/stages_3_1/pwconv2/Conv_myl0_93",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_1/pwconv2/Conv_output_0.1_98_myl0",
+    "Dimensions": [-1,3072,16,16],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_99_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.3/stages.3.1/pwconv2/Conv]\u001f[ONNX Layer: /backbone/stages.3/stages.3.1/act/Relu_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.3.1.pwconv2.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.3.1.pwconv2.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_Add_myl0_94",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_1/dwconv/Conv_output_0.1_95_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_99_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_2/dwconv/Conv_output_0.1_100_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Add_0x15218b98e1d52b1cdfa844677b6056ff",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.3/stages.3.1/Add]"
+},{
+  "Name": "/backbone/stages_3/stages_3_2/dwconv/Conv_myl0_95",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_2/dwconv/Conv_output_0.1_100_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_101_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm50_xmma_fprop_conv2d_c1_k1_f16f16_f16_f16_nchwkcrs_nchw_tilesize10x40x8_threadsize4x4_r7s7_u1v1_xcorr_zerobeta",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.3/stages.3.2/dwconv/Conv]"
+},{
+  "Name": "__myl_MulCast_myl0_96",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_101_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_2/act/Relu_output_0_QuantizeLinear_Output.1_102_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0x1e64ed60a8240e1675942692bd91d53e",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.3/stages.3.2/dwconv/Conv_output_0_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_3/stages_3_2/pwconv1/Conv_myl0_97",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_2/act/Relu_output_0_QuantizeLinear_Output.1_102_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_2/pwconv2/Conv_output_0.1_103_myl0",
+    "Dimensions": [-1,3072,16,16],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3e4m3_e4m3f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f32_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.3/stages.3.2/pwconv1/Conv]\u001f[ONNX Layer: /backbone/stages.3/stages.3.2/dwconv/Conv_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.3.2.pwconv1.weight_DequantizeLinear]\u001f[ONNX Layer: /backbone/stages.3/stages.3.2/act/Relu_output_0_QuantizeLinear]\u001f[ONNX Layer: /backbone/stages.3/stages.3.2/act/Relu]\u001f[ONNX Layer: backbone.stages.3.2.pwconv1.weight_QuantizeLinear]"
+},{
+  "Name": "/backbone/stages_3/stages_3_2/pwconv2/Conv_myl0_98",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_2/pwconv2/Conv_output_0.1_103_myl0",
+    "Dimensions": [-1,3072,16,16],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_104_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize64x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.3/stages.3.2/pwconv2/Conv]\u001f[ONNX Layer: /backbone/stages.3/stages.3.2/act/Relu_output_0_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.3.2.pwconv2.weight_DequantizeLinear]\u001f[ONNX Layer: backbone.stages.3.2.pwconv2.weight_QuantizeLinear]"
+},{
+  "Name": "__myl_Add_myl0_99",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages_3/stages_3_2/dwconv/Conv_output_0.1_100_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_104_myl0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/backbone/stages.3/stages.3.2/Add_output_0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Add_0x15218b98e1d52b1cdfa844677b6056ff",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /backbone/stages.3/stages.3.2/Add]"
+},{
+  "Name": "/psp_modules/AveragePool_3",
+  "LayerType": "CaskPooling",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages.3/stages.3.2/Add_output_0",
+    "Location": "Device",
+    "Dimensions": [16,768,16,16],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "Outputs": [
+  {
+    "Name": "/psp_modules/AveragePool_3_output_0",
+    "Location": "Device",
+    "Dimensions": [16,768,4,4],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "ParameterType": "Pooling",
+  "PoolingType": "AVERAGE",
+  "WindowSize": [4,4],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [0,0],
+  "PostPadding": [0,0],
+  "Stride": [4,4],
+  "BlendFactor": 0,
+  "AverageCountExcludesPadding": 0,
+  "TacticName": "sm50_xmma_pooling_nd_NCDHW_kAVERAGE_kGENERIC_3D_POOLING_MODE_kHALF_0",
+  "TacticValue": "0x1a8f216956eaf003",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /psp_modules/AveragePool_3]"
+},{
+  "Name": "/psp_modules/AveragePool_2",
+  "LayerType": "CaskPooling",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages.3/stages.3.2/Add_output_0",
+    "Location": "Device",
+    "Dimensions": [16,768,16,16],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "Outputs": [
+  {
+    "Name": "/psp_modules/AveragePool_2_output_0",
+    "Location": "Device",
+    "Dimensions": [16,768,3,3],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "ParameterType": "Pooling",
+  "PoolingType": "AVERAGE",
+  "WindowSize": [6,6],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [0,0],
+  "PostPadding": [0,0],
+  "Stride": [5,5],
+  "BlendFactor": 0,
+  "AverageCountExcludesPadding": 0,
+  "TacticName": "sm50_xmma_pooling_nd_NCDHW_kAVERAGE_kGENERIC_3D_POOLING_MODE_kHALF_0",
+  "TacticValue": "0x1a8f216956eaf003",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /psp_modules/AveragePool_2]"
+},{
+  "Name": "/psp_modules/AveragePool_1",
+  "LayerType": "CaskPooling",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages.3/stages.3.2/Add_output_0",
+    "Location": "Device",
+    "Dimensions": [16,768,16,16],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "Outputs": [
+  {
+    "Name": "/psp_modules/AveragePool_1_output_0",
+    "Location": "Device",
+    "Dimensions": [16,768,2,2],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "ParameterType": "Pooling",
+  "PoolingType": "AVERAGE",
+  "WindowSize": [8,8],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [0,0],
+  "PostPadding": [0,0],
+  "Stride": [8,8],
+  "BlendFactor": 0,
+  "AverageCountExcludesPadding": 0,
+  "TacticName": "sm50_xmma_pooling_fw_4d_FP16FP32NCHW_Average_FastDiv",
+  "TacticValue": "0x94ce450867316320",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /psp_modules/AveragePool_1]"
+},{
+  "Name": "/psp_modules/AveragePool",
+  "LayerType": "CaskPooling",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages.3/stages.3.2/Add_output_0",
+    "Location": "Device",
+    "Dimensions": [16,768,16,16],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "Outputs": [
+  {
+    "Name": "/psp_modules/AveragePool_output_0",
+    "Location": "Device",
+    "Dimensions": [16,768,1,1],
+    "Format/Datatype": "Row major linear FP16 format"
+  }],
+  "ParameterType": "Pooling",
+  "PoolingType": "AVERAGE",
+  "WindowSize": [16,16],
+  "PaddingMode": "kEXPLICIT_ROUND_DOWN",
+  "PrePadding": [0,0],
+  "PostPadding": [0,0],
+  "Stride": [16,16],
+  "BlendFactor": 0,
+  "AverageCountExcludesPadding": 0,
+  "TacticName": "sm50_xmma_pooling_fw_4d_FP16FP32NCHW_Average_FastDiv",
+  "TacticValue": "0x94ce450867316320",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /psp_modules/AveragePool]"
+},{
+  "Name": "__mye1363_0_myl5_0",
+  "LayerType": "shape_call",
+  "Inputs": [],
+  "Outputs": [],
+  "TacticName": "",
+  "StreamId": 0,
+  "Metadata": ""
+},{
+  "Name": "__myl_MulCast_myl5_1",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/psp_modules/AveragePool_output_0",
+    "Dimensions": [-1,768,1,1],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/psp_modules/ppm_blocks_0/activate/Relu_output_0.1_12_myl5",
+    "Dimensions": [-1,768,1,1],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0xea7a22fb2eed5af55537914a1d53b39a",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /psp_modules/AveragePool_output_0_QuantizeLinear]"
+},{
+  "Name": "/psp_modules/ppm_blocks_0/conv/Conv_myl5_2",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/psp_modules/ppm_blocks_0/activate/Relu_output_0.1_12_myl5",
+    "Dimensions": [-1,768,1,1],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_13_myl5",
+    "Dimensions": [-1,64,1,1],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize32x64x64_stage5_warpsize2x2x1_g1_tensor16x8x32_bias_f16",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /psp_modules/ppm_blocks.0/conv/Conv]\u001f[ONNX Layer: /psp_modules/AveragePool_output_0_DequantizeLinear]\u001f[ONNX Layer: onnx::Conv_787_DequantizeLinear]\u001f[ONNX Layer: /psp_modules/ppm_blocks.0/activate/Relu]\u001f[ONNX Layer: onnx::Conv_787_QuantizeLinear]"
+},{
+  "Name": "__myl_MulCast_myl5_3",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/psp_modules/AveragePool_1_output_0",
+    "Dimensions": [-1,768,2,2],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/psp_modules/ppm_blocks_1/activate/Relu_output_0.1_14_myl5",
+    "Dimensions": [-1,768,2,2],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0x6bf893a1b6b61ebb04e9c481f8cb2779",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /psp_modules/AveragePool_1_output_0_QuantizeLinear]"
+},{
+  "Name": "/psp_modules/ppm_blocks_1/conv/Conv_myl5_4",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/psp_modules/ppm_blocks_1/activate/Relu_output_0.1_14_myl5",
+    "Dimensions": [-1,768,2,2],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_15_myl5",
+    "Dimensions": [-1,64,2,2],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize32x64x64_stage5_warpsize2x2x1_g1_tensor16x8x32_bias_f16",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /psp_modules/ppm_blocks.1/conv/Conv]\u001f[ONNX Layer: /psp_modules/AveragePool_1_output_0_DequantizeLinear]\u001f[ONNX Layer: onnx::Conv_790_DequantizeLinear]\u001f[ONNX Layer: /psp_modules/ppm_blocks.1/activate/Relu]\u001f[ONNX Layer: onnx::Conv_790_QuantizeLinear]"
+},{
+  "Name": "__myl_MulCast_myl5_5",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/psp_modules/AveragePool_2_output_0",
+    "Dimensions": [-1,768,3,3],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/psp_modules/ppm_blocks_2/activate/Relu_output_0.1_16_myl5",
+    "Dimensions": [-1,768,3,3],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0xc4eaac281db473f19b2ddc743521721e",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /psp_modules/AveragePool_2_output_0_QuantizeLinear]"
+},{
+  "Name": "/psp_modules/ppm_blocks_2/conv/Conv_myl5_6",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/psp_modules/ppm_blocks_2/activate/Relu_output_0.1_16_myl5",
+    "Dimensions": [-1,768,3,3],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_17_myl5",
+    "Dimensions": [-1,64,3,3],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize32x64x64_stage5_warpsize2x2x1_g1_tensor16x8x32_bias_f16",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /psp_modules/ppm_blocks.2/conv/Conv]\u001f[ONNX Layer: /psp_modules/AveragePool_2_output_0_DequantizeLinear]\u001f[ONNX Layer: onnx::Conv_793_DequantizeLinear]\u001f[ONNX Layer: /psp_modules/ppm_blocks.2/activate/Relu]\u001f[ONNX Layer: onnx::Conv_793_QuantizeLinear]"
+},{
+  "Name": "__myl_MulCast_myl5_7",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/psp_modules/AveragePool_3_output_0",
+    "Dimensions": [-1,768,4,4],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/psp_modules/ppm_blocks_3/activate/Relu_output_0.1_18_myl5",
+    "Dimensions": [-1,768,4,4],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCast_0xbe660b23744162500ac0db8ac32f8a4d",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /psp_modules/AveragePool_3_output_0_QuantizeLinear]"
+},{
+  "Name": "/psp_modules/ppm_blocks_3/conv/Conv_myl5_8",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/psp_modules/ppm_blocks_3/activate/Relu_output_0.1_18_myl5",
+    "Dimensions": [-1,768,4,4],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_19_myl5",
+    "Dimensions": [-1,64,4,4],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize32x64x64_stage5_warpsize2x2x1_g1_tensor16x8x32_bias_f16",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /psp_modules/ppm_blocks.3/conv/Conv]\u001f[ONNX Layer: /psp_modules/AveragePool_3_output_0_DequantizeLinear]\u001f[ONNX Layer: onnx::Conv_796_DequantizeLinear]\u001f[ONNX Layer: /psp_modules/ppm_blocks.3/activate/Relu]\u001f[ONNX Layer: onnx::Conv_796_QuantizeLinear]"
+},{
+  "Name": "__myl_CastIotaAddMulAddFlooCeilSubSubReshReshReplReplReshReshReplReplMaxMinCastReshReplReshMaxMinEtc_myl5_9",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_19_myl5",
+    "Dimensions": [-1,64,4,4],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_17_myl5",
+    "Dimensions": [-1,64,3,3],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_15_myl5",
+    "Dimensions": [-1,64,2,2],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_13_myl5",
+    "Dimensions": [-1,64,1,1],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_23_myl5",
+    "Dimensions": [-1,64,16,16],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_22_myl5",
+    "Dimensions": [-1,64,16,16],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_21_myl5",
+    "Dimensions": [-1,64,16,16],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_20_myl5",
+    "Dimensions": [-1,64,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_CastIotaAddMulAddFlooCeilSubSubReshReshReplReplReshReshReplReplMaxMinCastReshReplReshMaxMinEtc_0x0fbdf56bfbbab97ee3b3d85f05a19da2",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /psp_modules/Resize]\u001f[ONNX Layer: /psp_modules/ppm_blocks.0/activate/Relu_output_0_cast_to_fp32]\u001f[ONNX Layer: /psp_modules/Resize_output_0_cast_to_fp16]\u001f[ONNX Layer: /psp_modules/Resize_1]\u001f[ONNX Layer: /psp_modules/ppm_blocks.1/activate/Relu_output_0_cast_to_fp32]\u001f[ONNX Layer: /psp_modules/Resize_1_output_0_cast_to_fp16]\u001f[ONNX Layer: /psp_modules/Resize_2]\u001f[ONNX Layer: /psp_modules/ppm_blocks.2/activate/Relu_output_0_cast_to_fp32]\u001f[ONNX Layer: /psp_modules/Resize_2_output_0_cast_to_fp16]\u001f[ONNX Layer: /psp_modules/Resize_3]\u001f[ONNX Layer: /psp_modules/ppm_blocks.3/activate/Relu_output_0_cast_to_fp32]\u001f[ONNX Layer: /psp_modules/Resize_3_output_0_cast_to_fp16]"
+},{
+  "Name": "__myl_MulCastMulCastMulCastMulCastMulCastConc_myl5_10",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_21_myl5",
+    "Dimensions": [-1,64,16,16],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_20_myl5",
+    "Dimensions": [-1,64,16,16],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "/backbone/stages.3/stages.3.2/Add_output_0",
+    "Dimensions": [-1,768,16,16],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_23_myl5",
+    "Dimensions": [-1,64,16,16],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_22_myl5",
+    "Dimensions": [-1,64,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/bottleneck/activate/Relu_output_0.1_24_myl5",
+    "Dimensions": [-1,1024,16,16],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulCastMulCastMulCastMulCastMulCastConc_0x2e5339f75da616d708a8b726a2f65c15",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /Concat_output_0_QuantizeLinear]\u001f[ONNX Layer: /Concat]"
+},{
+  "Name": "/bottleneck/conv/Conv_myl5_11",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/bottleneck/activate/Relu_output_0.1_24_myl5",
+    "Dimensions": [-1,1024,16,16],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_25_myl5",
+    "Dimensions": [-1,64,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize32x64x64_stage5_warpsize2x2x1_g1_tensor16x8x32_bias_f16",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /bottleneck/conv/Conv]\u001f[ONNX Layer: /Concat_output_0_DequantizeLinear]\u001f[ONNX Layer: onnx::Conv_799_DequantizeLinear]\u001f[ONNX Layer: /bottleneck/activate/Relu]\u001f[ONNX Layer: onnx::Conv_799_QuantizeLinear]"
+},{
+  "Name": "__myl_Move_myl5_12",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages.2/stages.2.8/Add_output_0_DequantizeLinear_Output",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/lateral_convs_2/activate/Relu_output_0.1_26_myl5",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Move_0x941a3b0902f9c9488216a894da33c137",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /lateral_convs.2/conv/Conv]\u001f[ONNX Layer: /lateral_convs.2/activate/Relu]\u001f[ONNX Layer: onnx::Conv_784_DequantizeLinear]\u001f[ONNX Layer: onnx::Conv_784_QuantizeLinear]"
+},{
+  "Name": "/lateral_convs_2/conv/Conv_myl5_13",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/lateral_convs_2/activate/Relu_output_0.1_26_myl5",
+    "Dimensions": [-1,384,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_27_myl5",
+    "Dimensions": [-1,64,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize128x64x32_stage5_warpsize2x2x1_g1_tensor16x8x16_simple_t1r1s1",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /lateral_convs.2/conv/Conv]\u001f[ONNX Layer: /lateral_convs.2/activate/Relu]\u001f[ONNX Layer: onnx::Conv_784_DequantizeLinear]\u001f[ONNX Layer: onnx::Conv_784_QuantizeLinear]"
+},{
+  "Name": "__myl_Move_myl5_14",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages.1/stages.1.2/Add_output_0_DequantizeLinear_Output",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/lateral_convs_1/activate/Relu_output_0.1_28_myl5",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Move_0x09d963db3eed2be69c0349d7851707e7",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /lateral_convs.1/conv/Conv]\u001f[ONNX Layer: /lateral_convs.1/activate/Relu]\u001f[ONNX Layer: onnx::Conv_781_DequantizeLinear]\u001f[ONNX Layer: onnx::Conv_781_QuantizeLinear]"
+},{
+  "Name": "/lateral_convs_1/conv/Conv_myl5_15",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/lateral_convs_1/activate/Relu_output_0.1_28_myl5",
+    "Dimensions": [-1,192,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_29_myl5",
+    "Dimensions": [-1,64,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm80_xmma_gemm_f16f16_f16f16_f16_tn_n_tilesize256x64x32_stage3_warpsize4x1x1_tensor16x8x16",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /lateral_convs.1/conv/Conv]\u001f[ONNX Layer: /lateral_convs.1/activate/Relu]\u001f[ONNX Layer: onnx::Conv_781_DequantizeLinear]\u001f[ONNX Layer: onnx::Conv_781_QuantizeLinear]"
+},{
+  "Name": "__myl_CastIotaAddMulAddFlooCeilSubSubReshReshReplReplReshReshReplReplMaxMinCastReshReplReshMaxMinEtc_myl5_16",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_29_myl5",
+    "Dimensions": [-1,64,64,64],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_27_myl5",
+    "Dimensions": [-1,64,32,32],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_25_myl5",
+    "Dimensions": [-1,64,16,16],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/fpn_convs_1/activate/Relu_output_0.1_32_myl5",
+    "Dimensions": [-1,64,64,64],
+    "Format/Datatype": "FP8"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_31_myl5",
+    "Dimensions": [-1,64,32,32],
+    "Format/Datatype": "FP8"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_30_myl5",
+    "Dimensions": [-1,64,16,16],
+    "Format/Datatype": "Float"
+  }],
+  "TacticName": "__myl_CastIotaAddMulAddFlooCeilSubSubReshReshReplReplReshReshReplReplMaxMinCastReshReplReshMaxMinEtc_0xfb7554e790c6fe478f327b22910cf9bf",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /Resize]\u001f[ONNX Layer: /Resize_1]\u001f[ONNX Layer: /bottleneck/activate/Relu_output_0_cast_to_fp32]\u001f[ONNX Layer: /Resize_output_0_QuantizeLinear]\u001f[ONNX Layer: /Resize_output_0_DequantizeLinear]\u001f[ONNX Layer: /Add_output_0_QuantizeLinear]\u001f[ONNX Layer: /Add]\u001f[ONNX Layer: /Resize_output_0_cast_to_fp16]\u001f[ONNX Layer: /Add_output_0_DequantizeLinear_Output_cast_to_fp32]\u001f[ONNX Layer: /Resize_1_output_0_cast_to_fp16]\u001f[ONNX Layer: /Add_1]\u001f[ONNX Layer: /Add_1_output_0_QuantizeLinear]\u001f[ONNX Layer: /Resize_1_output_0_DequantizeLinear]\u001f[ONNX Layer: /Resize_1_output_0_QuantizeLinear]\u001f[ONNX Layer: /Add_output_0_DequantizeLinear]"
+},{
+  "Name": "/fpn_convs_1/conv/Conv_myl5_17",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/fpn_convs_1/activate/Relu_output_0.1_32_myl5",
+    "Dimensions": [-1,64,64,64],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_33_myl5",
+    "Dimensions": [-1,64,64,64],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16_t1r3s3",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /fpn_convs.1/conv/Conv]\u001f[ONNX Layer: /Add_1_output_0_DequantizeLinear]\u001f[ONNX Layer: onnx::Conv_805_DequantizeLinear]\u001f[ONNX Layer: /fpn_convs.1/activate/Relu]\u001f[ONNX Layer: onnx::Conv_805_QuantizeLinear]"
+},{
+  "Name": "__myl_Move_myl5_18",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "/backbone/stages.0/stages.0.2/Add_output_0_DequantizeLinear_Output",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/lateral_convs_0/activate/Relu_output_0.1_34_myl5",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_Move_0xecbcf5e1fa9930380e4b7934b07b8104",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /lateral_convs.0/conv/Conv]\u001f[ONNX Layer: /lateral_convs.0/activate/Relu]\u001f[ONNX Layer: onnx::Conv_778_DequantizeLinear]\u001f[ONNX Layer: onnx::Conv_778_QuantizeLinear]"
+},{
+  "Name": "/lateral_convs_0/conv/Conv_myl5_19",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/lateral_convs_0/activate/Relu_output_0.1_34_myl5",
+    "Dimensions": [-1,96,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_35_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm80_xmma_gemm_f16f16_f16f32_f32_nn_n_tilesize96x64x32_stage3_warpsize2x2x1_tensor16x8x16",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /lateral_convs.0/conv/Conv]\u001f[ONNX Layer: /lateral_convs.0/activate/Relu]\u001f[ONNX Layer: onnx::Conv_778_DequantizeLinear]\u001f[ONNX Layer: onnx::Conv_778_QuantizeLinear]"
+},{
+  "Name": "__myl_IotaAddCastMulCastMulAddFlooCeilSubSubReshReshReplReplReshReshReplReplMaxMinCastReshReplEtc_myl5_20",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_35_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_33_myl5",
+    "Dimensions": [-1,64,64,64],
+    "Format/Datatype": "Half"
+  },
+  {
+    "Name": "/fpn_convs_1/activate/Relu_output_0.1_32_myl5",
+    "Dimensions": [-1,64,64,64],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_36_myl5",
+    "Dimensions": [128],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_45_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_44_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_43_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_42_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_41_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "FP8"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_40_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_39_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_38_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_37_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Float"
+  }],
+  "TacticName": "__myl_IotaAddCastMulCastMulAddFlooCeilSubSubReshReshReplReplReshReshReplReplMaxMinCastReshReplEtc_0x73d42ff13469cb034ca8d19f572e4c55",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /Resize_5]\u001f[ONNX Layer: /Add_1_output_0_DequantizeLinear]\u001f[ONNX Layer: /fpn_convs.1/activate/Relu_output_0_cast_to_fp32]\u001f[ONNX Layer: /Resize_2]\u001f[ONNX Layer: /Resize_2_output_0_cast_to_fp16]\u001f[ONNX Layer: /Resize_2_output_0_QuantizeLinear]\u001f[ONNX Layer: /Resize_2_output_0_DequantizeLinear]\u001f[ONNX Layer: /Add_2_output_0_QuantizeLinear]\u001f[ONNX Layer: /Add_2]\u001f[ONNX Layer: /Add_1_output_0_DequantizeLinear_Output_cast_to_fp32]\u001f[ONNX Layer: /Resize_3]"
+},{
+  "Name": "/fpn_convs_0/conv/Conv_myl5_21",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_41_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "/Concat_13_output_0_QuantizeLinear_Output.1_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3e4m3_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f32_t1r3s3",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /fpn_convs.0/conv/Conv]\u001f[ONNX Layer: /Add_2_output_0_DequantizeLinear]\u001f[ONNX Layer: onnx::Conv_802_DequantizeLinear]\u001f[ONNX Layer: /Concat_13_output_0_QuantizeLinear]\u001f[ONNX Layer: /fpn_convs.0/activate/Relu]\u001f[ONNX Layer: onnx::Conv_802_QuantizeLinear]"
+},{
+  "Name": "__myl_MulMulAddMulAddMulAddCastDivCast_myl5_22",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_40_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_37_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_39_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_38_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_42_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_45_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_43_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_44_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Float"
+  }],
+  "Outputs": [
+  {
+    "Name": "/Concat_13_output_0_QuantizeLinear_Output.1_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulMulAddMulAddMulAddCastDivCast_0x6b8886054be78144c6aea003d1b5a184_vec",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /Resize_5_output_0_cast_to_fp16]\u001f[ONNX Layer: /Concat_13_output_0_QuantizeLinear]\u001f[ONNX Layer: /Resize_5]"
+},{
+  "Name": "/fpn_convs_2/conv/Conv_myl5_23",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_31_myl5",
+    "Dimensions": [-1,64,32,32],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_48_myl5",
+    "Dimensions": [-1,64,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16_t1r3s3",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /fpn_convs.2/conv/Conv]\u001f[ONNX Layer: /Add_output_0_DequantizeLinear]\u001f[ONNX Layer: onnx::Conv_808_DequantizeLinear]\u001f[ONNX Layer: /fpn_convs.2/activate/Relu]\u001f[ONNX Layer: onnx::Conv_808_QuantizeLinear]"
+},{
+  "Name": "__myl_CastMulAddFlooCeilSubSubReshReshReplReplReshReshReplReplMaxMinCastReshReplReshMaxMinCastEtc_myl5_24",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_36_myl5",
+    "Dimensions": [128],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_48_myl5",
+    "Dimensions": [-1,64,32,32],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "/Concat_13_output_0_QuantizeLinear_Output.1_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_CastMulAddFlooCeilSubSubReshReshReplReplReshReshReplReplMaxMinCastReshReplReshMaxMinCastEtc_0xc03fc648a54f231ab297f8006b712731",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /Resize_4]\u001f[ONNX Layer: /Resize_4_output_0_cast_to_fp16]\u001f[ONNX Layer: /Concat_13_output_0_QuantizeLinear]\u001f[ONNX Layer: /fpn_convs.2/activate/Relu_output_0_cast_to_fp32]"
+},{
+  "Name": "__myl_MulAddFlooCeilSubSubReshReshReplReplReshReshReplReplMaxMinCastReshReplReshMaxMinCastReshEtc_myl5_25",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_36_myl5",
+    "Dimensions": [128],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_30_myl5",
+    "Dimensions": [-1,64,16,16],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_30_myl5",
+    "Dimensions": [-1,64,16,16],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_30_myl5",
+    "Dimensions": [-1,64,16,16],
+    "Format/Datatype": "Float"
+  },
+  {
+    "Name": "__myln_k_arg__bb1_30_myl5",
+    "Dimensions": [-1,64,16,16],
+    "Format/Datatype": "Float"
+  }],
+  "Outputs": [
+  {
+    "Name": "/Concat_13_output_0_QuantizeLinear_Output.1_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "FP8"
+  }],
+  "TacticName": "__myl_MulAddFlooCeilSubSubReshReshReplReplReshReshReplReplMaxMinCastReshReplReshMaxMinCastReshEtc_0x5c79429279c24015bc9debe6a5c91065",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /Resize_3]\u001f[ONNX Layer: /Concat_13_output_0_QuantizeLinear]\u001f[ONNX Layer: /Resize_3_output_0_cast_to_fp16]"
+},{
+  "Name": "/fpn_bottleneck/conv/Conv_myl5_26",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "/Concat_13_output_0_QuantizeLinear_Output.1_myl5",
+    "Dimensions": [-1,256,128,128],
+    "Format/Datatype": "FP8"
+  }],
+  "Outputs": [
+  {
+    "Name": "__mye28205_51_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm89_xmma_fprop_implicit_gemm_e4m3f16_e4m3f32_f32_nhwckrsc_nhwc_tilesize128x64x64_stage4_warpsize2x2x1_g1_tensor16x8x32_bias_f16_t1r3s3",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /fpn_bottleneck/conv/Conv]\u001f[ONNX Layer: /Concat_13_output_0_DequantizeLinear]\u001f[ONNX Layer: onnx::Conv_811_DequantizeLinear]\u001f[ONNX Layer: /fpn_bottleneck/activate/Relu]\u001f[ONNX Layer: onnx::Conv_811_QuantizeLinear]"
+},{
+  "Name": "/conv_seg/Conv_myl5_27",
+  "LayerType": "correlation",
+  "Inputs": [
+  {
+    "Name": "__mye28205_51_myl5",
+    "Dimensions": [-1,64,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_52_myl5",
+    "Dimensions": [-1,8,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "sm80_xmma_fprop_implicit_gemm_indexed_wo_smem_f16f16_f16f16_f16_nhwckrsc_nhwc_tilesize128x16x32_stage1_warpsize4x1x1_g1_tensor16x8x16_alignc4",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /conv_seg/Conv]"
+},{
+  "Name": "__myl_SlicCastIotaAddMulAddFlooCeilSubSubReshReshReplReplReshReshReplReplMaxMinCastReshReplReshEtc_myl5_28",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_52_myl5",
+    "Dimensions": [-1,8,128,128],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "__myln_k_arg__bb1_53_myl5",
+    "Dimensions": [-1,7,512,512],
+    "Format/Datatype": "Half"
+  }],
+  "TacticName": "__myl_SlicCastIotaAddMulAddFlooCeilSubSubReshReshReplReplReshReshReplReplMaxMinCastReshReplReshEtc_0x6ad7b3e1229eb15fd3ddd890eaa142fb",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: /Resize_6]\u001f[ONNX Layer: /conv_seg/Conv_output_0_cast_to_fp32]\u001f[ONNX Layer: /Softmax]\u001f[ONNX Layer: /Resize_6_output_0_cast_to_fp16]\u001f[ONNX Layer: /conv_seg/Conv]"
+},{
+  "Name": "__myl_Cast_myl5_29",
+  "LayerType": "kgen",
+  "Inputs": [
+  {
+    "Name": "__myln_k_arg__bb1_53_myl5",
+    "Dimensions": [-1,7,512,512],
+    "Format/Datatype": "Half"
+  }],
+  "Outputs": [
+  {
+    "Name": "output.0",
+    "Dimensions": [-1,7,512,512],
+    "Format/Datatype": "Float"
+  }],
+  "TacticName": "__myl_Cast_0x51509839d7bf89a5285a3da3b0948d30",
+  "StreamId": 0,
+  "Metadata": "[ONNX Layer: output.0_cast_to_fp32]"
+}],
+"Bindings": ["input.0"
+,"output.0"
+]}
